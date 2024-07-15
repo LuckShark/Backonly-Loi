@@ -47,6 +47,16 @@ public class CourseController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+    @DeleteMapping("/{id}") //isso indica que vou receber essa variável no path (URL)
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        return courseRepository.findById(id)
+                .map(recordFound -> {
+                    courseRepository.deleteById(id);
+                    //Como retornar o que foi removido??? usa no content
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
 
 
