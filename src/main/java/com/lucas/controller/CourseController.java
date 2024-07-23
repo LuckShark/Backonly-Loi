@@ -1,7 +1,6 @@
 package com.lucas.controller;
 
 import com.lucas.model.Course;
-import com.lucas.repository.CourseRepository;
 
 import com.lucas.service.CourseService;
 import jakarta.validation.Valid;
@@ -26,17 +25,14 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-
     @GetMapping
     public @ResponseBody List<Course> list() {
         return courseService.list();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> findById(@PathVariable @NotNull @Positive Long id) {
-        return courseService.findById(id)
-                .map(recordFound -> ResponseEntity.ok().body(recordFound))
-                .orElse(ResponseEntity.notFound().build());
+    public Course findById(@PathVariable @NotNull @Positive Long id) {
+        return courseService.findById(id);
     }
 
     @PostMapping
@@ -46,18 +42,15 @@ public class CourseController {
     }
 
     @PutMapping("/{id}") //atenção: além do body, preciso do ID
-    public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id,
+    public Course update(@PathVariable @NotNull @Positive Long id,
             @RequestBody @Valid Course course){
-        return courseService.update(id, course)
-                .map(recordFound -> ResponseEntity.ok().body(recordFound))
-                .orElse(ResponseEntity.notFound().build());
+        return courseService.update(id, course);
     }
+
     @DeleteMapping("/{id}") //isso indica que vou receber essa variável no path (URL)
-    public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id){
-        if (courseService.delete(id)) {
-            return ResponseEntity.noContent().<Void>build();
-        }
-        return ResponseEntity.notFound().build();
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable @NotNull @Positive Long id){
+        courseService.delete(id);
     }
 }
 
