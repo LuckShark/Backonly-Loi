@@ -1,5 +1,6 @@
 package com.lucas.service;
 
+import com.lucas.dto.CourseDTO;
 import com.lucas.exception.RecordNotFoundException;
 import com.lucas.model.Course;
 import com.lucas.repository.CourseRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +29,14 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public List<Course> list() {
-        return courseRepository.findAll();
+    public List<CourseDTO> list() {
+        List<Course> courses = courseRepository.findAll();
+        List<CourseDTO> dtos = new ArrayList<>(courses.size());
+        for (Course course : courses){
+            CourseDTO dto = new CourseDTO(course.getId(), course.getName(), course.getCategory());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
     public Course findById(@PathVariable @NotNull @Positive Long id) {
