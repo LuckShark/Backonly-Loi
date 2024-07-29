@@ -2,6 +2,7 @@ package com.lucas.service;
 
 import com.lucas.dto.CourseDTO;
 import com.lucas.dto.mapper.CourseMapper;
+import com.lucas.enums.Category;
 import com.lucas.exception.RecordNotFoundException;
 import com.lucas.repository.CourseRepository;
 
@@ -48,7 +49,7 @@ public class CourseService {
         return courseRepository.findById(id)
                 .map(recordFound -> {
                     recordFound.setName(course.name());
-                    recordFound.setCategory(course.category());
+                    recordFound.setCategory(Category.FRONT_END);
                     return courseMapper.toDTO(courseRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
