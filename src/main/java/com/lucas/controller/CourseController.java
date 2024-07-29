@@ -1,7 +1,6 @@
 package com.lucas.controller;
 
 import com.lucas.dto.CourseDTO;
-import com.lucas.model.Course;
 
 import com.lucas.service.CourseService;
 import jakarta.validation.Valid;
@@ -31,19 +30,19 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public Course findById(@PathVariable @NotNull @Positive Long id) {
+    public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
         return courseService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Course create(@RequestBody @Valid Course course){
+    public CourseDTO create(@RequestBody @Valid @NotNull CourseDTO course){
         return courseService.create(course);
     }
 
     @PutMapping("/{id}") //atenção: além do body, preciso do ID
-    public Course update(@PathVariable @NotNull @Positive Long id,
-            @RequestBody @Valid Course course){
+    public CourseDTO update(@PathVariable @NotNull @Positive Long id,
+            @RequestBody @Valid @NotNull CourseDTO course){
         return courseService.update(id, course);
     }
 
